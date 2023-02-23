@@ -1,9 +1,14 @@
 import React from "react";
 import { Button, Card, Container, Form, Row } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
-import { REGISTRATION_ROUTE } from "../utils/consts";
+import { NavLink, useLocation } from "react-router-dom";
+import { LOGIN_ROUTE, REGISTRATION_ROUTE } from "../utils/consts";
 
 const Auth = () => {
+  const location = useLocation();
+  console.log(location);
+
+  const isLogin = location.pathname === LOGIN_ROUTE;
+
   return (
     <Container
       className={"d-flex justify-content-center align-items-center"}
@@ -11,24 +16,35 @@ const Auth = () => {
     >
       <Card style={{ width: 600 }} className="p-5">
         <h2 style={{ fontWeight: 700 }} className="m-auto">
-          Авторизация
+          {isLogin ? "Авторизация" : "Регистрация"}
         </h2>
         <Form className="d-flex flex-column">
           <Form.Control className="mt-3" placeholder={"Введите email..."} />
           <Form.Control className="mt-3" placeholder={"Введите пароль..."} />
-          <Form>
-            <div>
-              Нет аккаунта?
-              <NavLink to={REGISTRATION_ROUTE}>Зарегистрироваться</NavLink>
-            </div>
-            <Button
-              style={{ fontWeight: 600 }}
-              className="mt-3 align-self-end"
-              variant="outline-success"
-            >
-              Войти
+          <div
+            style={{ width: "100%" }}
+            className=" d-flex mt-3 align-self-start justify-content-between"
+          >
+            {isLogin ? (
+              <div>
+                Нет аккаунта?
+                <NavLink className="ps-1" to={REGISTRATION_ROUTE}>
+                  Зарегистрироваться
+                </NavLink>
+              </div>
+            ) : (
+              <div>
+                Есть аккаунт?
+                <NavLink className="ps-1" to={LOGIN_ROUTE}>
+                  Войти
+                </NavLink>
+              </div>
+            )}
+
+            <Button style={{ fontWeight: 600 }} variant="outline-success">
+              {isLogin ? "Войти" : "Регистрация"}
             </Button>
-          </Form>
+          </div>
         </Form>
       </Card>
     </Container>
